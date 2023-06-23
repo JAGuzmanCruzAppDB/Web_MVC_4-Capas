@@ -4,14 +4,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
+    <title>@ViewBag.Title - Administrar canasta</title>
     @Styles.Render("~/Content/css")
     @*@Scripts.Render("~/bundles/modernizr")*@
 </head>
 <body class="sb-nav-fixed">
     <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3" href="index.html">Canasta básica</a>
+        <a class="navbar-brand ps-3" href="@Url.Action("Index","Home")">Administracion de canasta</a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
@@ -38,84 +38,67 @@
             <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
                 <div class="sb-sidenav-menu">
                     <div class="nav">
-                        <div class="sb-sidenav-menu-heading">Información</div>
-                        <a class="nav-link" href="@Url.Action("Perfil","Home")">
+                        <div class="sb-sidenav-menu-heading">Información de usuarios</div>
+                        <a class="nav-link" href="@Url.Action("Usuario","Home")">
                             <div class="sb-nav-link-icon"><i class="fas fa-user fa-fw"></i></div>
                             Perfil
                         </a>
-                        <a class="nav-link" href="@Url.Action("Usuarios","Home")">
-                            <div class="sb-nav-link-icon"><i class="fas fa-users fa-fw"></i></div>
-                            Usuarios
-                        </a>
-                        <div class="sb-sidenav-menu-heading">Información del sistema</div>
 
-                        <a class="nav-link" href="@Url.Action("Categoria","InformacionAdmin")">
-                            <div class="sb-nav-link-icon"><i class="fas fa-bookmark"></i></div>
-                            Categorias
+                        <div class="sb-sidenav-menu-heading">Información de productos</div>
+                        <a class="nav-link" href="@Url.Action("Marcas","Productos")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-circle fa-fw"></i></div>
+                            Marcas
                         </a>
-                        <a class="nav-link" href="@Url.Action("Producto","InformacionAdmin")">
-                            <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
+                        <a class="nav-link" href="@Url.Action("Productos","Productos")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-circle fa-fw"></i></div>
                             Productos
                         </a>
-                        <a class="nav-link" href="@Url.Action("Plaza","InformacionAdmin")">
-                            <div class="sb-nav-link-icon"><i class="fa fa-map-marker-alt"></i></div>
-                            Plazas
+
+                        <div class="sb-sidenav-menu-heading">Registrar actividad</div>
+
+                        <a class="nav-link" href="@Url.Action("Ventas","Actividad")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-bookmark"></i></div>
+                            Ventas
                         </a>
-                        <div class="sb-sidenav-menu-heading">Información administrativa</div>
+                        <a class="nav-link" href="@Url.Action("Compras","Actividad")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-boxes"></i></div>
+                            Compras
+                        </a>
+
+                        <div class="sb-sidenav-menu-heading">Contabilidad</div>
 
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                             <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
-                            Administración
+                            Reportes
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav">
-                                <a class="nav-link" href="@Url.Action("Compra","Home")">Compra</a>
-                                <a class="nav-link" href="@Url.Action("Venta","Home")">Venta</a>
+                                <a class="nav-link" href="@Url.Action("ContaCompras","Contabilidad")">Compras</a>
+                                <a class="nav-link" href="@Url.Action("ContaVentas","Contabilidad")">Ventas</a>
                             </nav>
                         </div>
+
                         <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                             <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                            Reportes
+                            Sistema
                             <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         <div class="collapse" id="collapsePages" aria-labelledby="headingTwo" data-bs-parent="#sidenavAccordion">
                             <nav class="sb-sidenav-menu-nested nav accordion" id="sidenavAccordionPages">
                                 <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseAuth" aria-expanded="false" aria-controls="pagesCollapseAuth">
-                                    Verificación
+                                    Mantenedor
                                     <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                                 </a>
                                 <div class="collapse" id="pagesCollapseAuth" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
-                                        <a class="nav-link" href="@Url.Action("Login","Home")">Login</a>
                                         <a class="nav-link" href="@Url.Action("Login","Home")">Recuperar contraseña</a>
+                                        <a class="nav-link" href="@Url.Action("Login","Home")">Quejas y sugerencias!</a>
+
                                     </nav>
                                 </div>
                             </nav>
                         </div>
-                        @*<a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#pagesCollapseError" aria-expanded="false" aria-controls="pagesCollapseError">
-                                Error
-                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
-                            </a>
-                            <div class="collapse" id="pagesCollapseError" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordionPages">
-                                <nav class="sb-sidenav-menu-nested nav">
-                                    <a class="nav-link" href="401.html">401 Page</a>
-                                    <a class="nav-link" href="404.html">404 Page</a>
-                                    <a class="nav-link" href="500.html">500 Page</a>
-                                </nav>
-                            </div>*@
-                        @*</nav>
-                            </div>*@
-                        @*<div class="sb-sidenav-menu-heading">Reportes</div>
-                            <a class="nav-link" href="charts.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
-                                Charts
-                            </a>
-                            <a class="nav-link" href="tables.html">
-                                <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
-                                Tables
-                            </a>
-                            <div class="sb-sidenav-menu-heading">Reportes</div>*@
                     </div>
                 </div>
                 <div class="sb-sidenav-footer">
