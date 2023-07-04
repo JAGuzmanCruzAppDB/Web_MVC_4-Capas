@@ -4,5 +4,260 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Usuario</h2>
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="index.html">Información de usuarios</a></li>
+    <li class="breadcrumb-item active">Perfil</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-users me-1"></i> Lista de usuarios
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-success" onclick="abrirModal()"><i class="fas fa-user-plus  me-1"></i>Crear nuevo</button>
+            </div>
+        </div>
+
+        <hr />
+
+        <table id="tabla" class="display cell-border" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Nombre Usuario</th>
+                    <th>Nombre Completo</th>
+                    <th>Correo</th>
+                    <th>Estado</th>
+                    <th></th>
+
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Usuario</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body @*g-2*@">
+                <input id="txtid" type="text" value="0" />
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label for="txtNombreUsuario" class="form-label">Nombre Usuario</label>
+                        <input type="text" class="form-control" id="txtNombreUsuario" placeholder="Alfred" autocomplete="off">
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="txtNombreCompleto" class="form-label">Nombre completo</label>
+                        <input type="text" class="form-control" id="txtNombreCompleto" placeholder="José Alfredo Hernandez Hernández" autocomplete="off">
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="txtCorreo" class="form-label">Correo</label>
+                        <input type="email" class="form-control" id="txtCorreo" placeholder="MyName@gmail.com" autocomplete="off">
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="txtPass" class="form-label">Contraseña</label>
+                        <input type="password" class="form-control" id="txtPass" placeholder="*******" autocomplete="off">
+                    </div>
+                    <div class="col-sm-12">
+                        <label for="cbxEstado" class="form-label">Estado del usuario</label>
+                        <select class="form-select" id="cbxEstado">
+                            <option selected>Activo/Baneado</option>
+                            <option value="1">Activo</option>
+                            <option value="0">Baneado</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
+                            A simple danger alert/check it out!
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div id="mensajeInformativo" class="alert alert-primary" role="alert">
+                            A simple danger alert/check it out!
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+
+        var tabladata;
+        var filaSeleccionada;
+        jQuery.ajax({
+            url: '@Url.Action("ListarUsuarios", "Home")',
+            type: "GET",
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                console.log(data);
+            }
+        })
+
+        tabladata = $("#tabla").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: '@Url.Action("ListarUsuarios", "Home")',
+                type: "GET",
+                dataType: "json",
+            },
+            "columns": [
+                { "data":"nombreusuario"},
+                { "data":"nombrecompleto"},
+                { "data":"correo"},
+                {
+                    "data": "estado", "render": function (valor) {
+                        if (valor){
+                            return '<span class="badge rounded-pill bg-success">Si</span>'
+                        } else {
+                            return '<span class="badge rounded-pill bg-secondary">No</span>'
+                        }
+
+                    }
+                },
+                {
+                    "defaultContent": '<button type="button" class="btn btn-primary btn-editar"><i class="fas fa-pen me-1"></i></button>' +
+                        '<button type="button" class="btn btn-danger ms-2"><i class="fas fa-trash me-1"></i></button>',
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px"
+                }
+            ],
+            "language": {
+                "url":"https://cdn.datatables.net/plug-ins/1.13.4/i18n/es-ES.json"
+            }
+        });
+
+        function abrirModal(json) {
+            $("#txtid").val(0);
+            $("#txtNombreUsuario").val("");
+            $("#txtNombreCompleto").val("");
+            $("#txtCorreo").val("");
+            $("#cbxEstado").val("Activo/Baneado");
+            $("#mensajeError").hide();
+            $("#mensajeInformativo").hide();
+
+            if (json != null) {
+                $("#txtid").val(json.idusuario);
+                $("#txtNombreUsuario").val(json.nombreusuario);
+                $("#txtNombreCompleto").val(json.nombrecompleto);
+                $("#txtCorreo").val(json.correo);
+                $("#cbxEstado").val(json.estado == true ? 1 : 0);
+            }
+            $("#formModal").modal("show");
+        }
+
+        $("#tabla tbody").on("click", '.btn-editar', function () {
+
+            filaSeleccionada = $(this).closest("tr");
+
+            var data = tabladata.row(filaSeleccionada).data();
+
+            console.log(data);
+
+            abrirModal(data);
+
+        })
+
+        function Guardar() {
+            var Usuario = {
+                idusuario: $("#txtid").val(),
+                nombreusuario: $("#txtNombreUsuario").val(),
+                nombrecompleto: $("#txtNombreCompleto").val(),
+                correo: $("#txtCorreo").val(),
+                estado: $("#cbxEstado").val() == 1 ? true: false
+            }
+
+            jQuery.ajax({
+                url: '@Url.Action("GuardarUsuario","Home")',
+                type: "POST",
+                data: JSON.stringify({ objeto : Usuario }),
+                dataType: "json",
+                contentType: "application/json; charset-utf-8",
+                success: function (data) {
+
+                    //debugger;
+                    //re inprimir en la tabla el usuario agregado
+                    //usuario nuevo
+                    if (Usuario.idusuario == 0) {
+                        //alert("Se a creado un nuevo usuario")
+
+                        //usuario nuevo
+                        if (data.resultado != 0) {
+
+                            Usuario.idusuario = data.resultado;
+                            tabladata.row.add(Usuario).draw(false);
+
+                            $("#formModal").modal("hide");
+                            alert("Se a creado un nuevo usuario, la información fue eviada a su correo")
+
+                        } else {
+                            //alert(data.mensaje)
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                            $("#formModal").modal("show")
+                        }
+                    }
+                    //Actualizar usuario
+                    else {
+                        
+                        /*tabladata.row(filaSeleccionada).data(Usuario).draw(false);*/
+                        if (data.resultado) {
+                            /*tabladata.row(filaSeleccionada).data(Usuario).draw(false);*/
+                            tabladata.row(filaSeleccionada).data(Usuario).draw(false);
+                            filaSeleccionada = null;
+                            $("#formModal").modal("hide");
+                            alert("Se a actualizado el usuario, la información fue eviada a su correo")
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                            //alert(data.mensaje)
+                            $("#formModal").modal("show");
+                            
+                        }
+
+                    }
+                },
+                error: function (error) {
+                    console.log(error)
+                },
+                beforeSend: function () {
+                    
+                },
+            });
+
+
+            //$("#formModal").modal("hide");
+        }
+
+        function eliminar() {
+
+        }
+    </script>
+}
 
