@@ -124,7 +124,7 @@ namespace CapaDatos
             }
             return resultado;
         }
-        public bool Eliminar(Usuario obj, out string Mensaje/*int id*/)
+        public bool Eliminar(int id, out string Mensaje)//emviar un usuario objeto
         {
             bool respuesta = false;
             Mensaje = string.Empty;
@@ -132,23 +132,23 @@ namespace CapaDatos
             {
                 using (SqlConnection oconexion = new SqlConnection(Conexion.cn))
                 {
-                    //SqlCommand cmd = new SqlCommand("delete top (1) from usuario where id=@id", oconexion);
-                    //cmd.Parameters.AddWithValue("@id", id);
-                    //cmd.CommandType = CommandType.Text;
-                    //oconexion.Open();
-                    //respuesta = cmd.ExecuteNonQuery() > 0 ? true : false;
-                    SqlCommand cmd = new SqlCommand("sp_eliminarusuario", oconexion);
-                    cmd.Parameters.AddWithValue("id", obj.idusuario);
-                    cmd.Parameters.Add("respuesta", SqlDbType.Int).Direction = ParameterDirection.Output;
-                    cmd.Parameters.Add("mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
-                    cmd.CommandType = CommandType.StoredProcedure;
-
+                    SqlCommand cmd = new SqlCommand("delete top (1) from usuario where idusuario=@id", oconexion);
+                    cmd.Parameters.AddWithValue("@id", id);
+                    cmd.CommandType = CommandType.Text;
                     oconexion.Open();
+                    respuesta = cmd.ExecuteNonQuery() > 0 ? true : false;
+                    //SqlCommand cmd = new SqlCommand("sp_eliminarusuario", oconexion);
+                    ////cmd.Parameters.AddWithValue("id", );
+                    //cmd.Parameters.Add("respuesta", SqlDbType.Int).Direction = ParameterDirection.Output;
+                    //cmd.Parameters.Add("mensaje", SqlDbType.VarChar, 500).Direction = ParameterDirection.Output;
+                    //cmd.CommandType = CommandType.StoredProcedure;
 
-                    cmd.ExecuteNonQuery();
+                    //oconexion.Open();
 
-                    respuesta = Convert.ToBoolean(cmd.Parameters["respuesta"].Value);
-                    Mensaje = cmd.Parameters["mensaje"].Value.ToString();
+                    //cmd.ExecuteNonQuery();
+
+                    //respuesta = Convert.ToBoolean(cmd.Parameters["respuesta"].Value);
+                    //Mensaje = cmd.Parameters["mensaje"].Value.ToString();
                 }
 
             }

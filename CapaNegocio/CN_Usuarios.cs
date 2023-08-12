@@ -34,15 +34,33 @@ namespace CapaNegocio
             }
             if (string.IsNullOrEmpty(Mensaje))
             {
-                string clave = "test123";
-                obj.clave = CN_Recursos.GetSHA256(clave);
+                //    //string clave = "test123";
+                //    string clave = CN_Recursos.GenerarClave();
 
+                //    string asunto = "Creacion de cuenta";
+                //    string mensaje_correo = "<h3>Su cuenta fue creada correctamente</h3></br><p>Su contraseña para acceder es: ¡clave!</p>";
+                //    mensaje_correo = mensaje_correo.Replace("¡clave!", clave);
+
+                //    bool respuesta = CN_Recursos.EnviarCorreo(obj.correo, asunto, mensaje_correo);
+                //    if (respuesta)
+                //    {
+                //        obj.clave = CN_Recursos.ConvertirSha256(clave);
+                //        return objCapadatos.Registrar(obj, out Mensaje);
+                //    }
+                //    else
+                //    {
+                //        Mensaje = "No se puede enviar el correo";
+                //        return 0;
+                //    }
+
+                string clave = CN_Recursos.GenerarClave();
+                obj.clave = CN_Recursos.ConvertirSha256(clave);
                 return objCapadatos.Registrar(obj, out Mensaje);
 
             }
             else
             {
-                return 0;
+               return 0;
             }
 
         }
@@ -70,7 +88,7 @@ namespace CapaNegocio
                 return false;
             }
         }
-        public bool Eliminar(Usuario id, out string Mensaje)
+        public bool Eliminar(int id, out string Mensaje)//emviar un usuario objeto
         {
             return objCapadatos.Eliminar(id, out Mensaje);
         }
