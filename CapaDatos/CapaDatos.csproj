@@ -43,6 +43,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CD_Usuarios.cs" />
+    <Compile Include="Classpruebas.cs" />
     <Compile Include="Conexion.cs" />
     <Compile Include="encriptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
