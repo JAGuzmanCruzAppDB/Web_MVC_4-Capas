@@ -46,6 +46,7 @@ namespace CapaNegocio
                 var smtp = new SmtpClient()
                 {
                     Credentials = new NetworkCredential("bfjose26pruebas@gmail.com", "hgtskicriyndceam"),
+         
                     Host = "smtp.gmail.com",
                     Port = 587,
                     EnableSsl = true
